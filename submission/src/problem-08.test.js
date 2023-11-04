@@ -1,44 +1,41 @@
-const { extractSpeciesNames, extractSpeciesNames2 } = require('./observations');
-const data = require('./data');
-const result0 = data.results[0];
-const result1 = data.results[1];
+const { buildApiEndpoint } = require('./solutions');
 
-const testCases = (fn) => {
-  test('should return a single result', () => {
-    expect(fn({ results: [result0] })).toEqual(['Muskrat']);
+describe('Problem 8 - buildApiEndpoint() function', function () {
+  test('correct values produce an expected endpoint', function () {
+    let endpoint = buildApiEndpoint('users', '123', 'John Doe');
+    expect(endpoint).toEqual('/users/123/John%20Doe');
   });
 
-  test('extractSpeciesNames should not return duplicates', () => {
-    expect(fn({ results: [result0, result0] })).toEqual(['Muskrat']);
+  test('extraData values are properly encoded in endpoint', function () {
+    let endpoint = buildApiEndpoint('products', '456', 'Special: Limited Edition');
+    expect(endpoint).toEqual('/products/456/Special%3A%20Limited%20Edition');
   });
 
-  test('extractSpeciesNames should deal properly with multiple values without duplicating', () => {
-    expect(fn({ results: [result0, result0, result1, result1] })).toEqual([
-      'Muskrat',
-      'Cordia sebestena sebestena'
-    ]);
+  test('extraData is optional', function () {
+    let endpoint = buildApiEndpoint('users', '123');
+    expect(endpoint).toEqual('/users/123');
   });
 
-  test('extractSpeciesNames should work on real data', () => {
-    expect(fn(data)).toEqual([
-      'Muskrat',
-      'Cordia sebestena sebestena',
-      'Common Eastern Bumble Bee',
-      "Angel's Trumpet",
-      'Dryobates Woodpeckers',
-      'American trumpet vine',
-      'bittersweet nightshade',
-      '香茶屬',
-      '矮牽牛屬',
-      '芹亞科'
-    ]);
+  test('missing or empty resourceType or resourceId throw', function () {
+    expect(() => buildApiEndpoint()).toThrow();
+    expect(() => buildApiEndpoint('users')).toThrow();
+    expect(() => buildApiEndpoint('', '123', 'John Doe')).toThrow();
+    expect(() => buildApiEndpoint('users', '', 'John Doe')).toThrow();
+    expect(() => buildApiEndpoint('users', '123', '')).toThrow();
   });
-};
 
-describe('extractSpeciesNames()', () => {
-  testCases(extractSpeciesNames);
-});
+  test('extraData can be left out', function () {
+    let endpoint = buildApiEndpoint('users', '123');
+    expect(endpoint).toEqual('/users/123');
+  });
 
-describe('extractSpeciesNames2()', () => {
-  testCases(extractSpeciesNames2);
+  test('resourceId can be a number', function () {
+    let endpoint = buildApiEndpoint('users', 123, 'John Doe');
+    expect(endpoint).toEqual('/users/123/John%20Doe');
+  });
+
+  test('resourceId can be a string containing a number', function () {
+    let endpoint = buildApiEndpoint('users', '123', 'John Doe');
+    expect(endpoint).toEqual('/users/123/John%20Doe');
+  });
 });

@@ -1,46 +1,65 @@
-const data = require('./data');
-const { getObservationsByTaxa } = require('./observations');
+const { toDateString, parseDateString } = require('./solutions');
 
-describe('Problem 04 - getObservationsByTaxa() function', function () {
-  test('if an unknown taxon name is passed, empty list is returned', function () {
-    expect(getObservationsByTaxa(data, 'Unknown')).toEqual([]);
+// Returns true if two dates have same year, month, day (ignoring time)
+function compareDates(a, b) {
+  return (
+    a.getFullYear() === b.getFullYear() &&
+    a.getMonth() === b.getMonth() &&
+    a.getDate() === b.getDate()
+  );
+}
+
+describe('Problem 4 - toDateString() function', function () {
+  test('a date is correctly converted to a date string in the YYYY/MM/DD format', function () {
+    let date = new Date('December 10, 2023');
+    let result = toDateString(date, 'YYYY/MM/DD');
+    expect(result).toBe('2023/12/10');
   });
 
-  test('if a single, known taxon name is passed, the full Object should be returned', function () {
-    let taxonName = 'Plantae';
-    let result0 = data.results[1];
-
-    expect(result0.taxon.iconic_taxon_name).toBe(taxonName);
-    let result = getObservationsByTaxa({ results: [result0] }, taxonName);
-    expect(result).toEqual([result0]);
+  test('a date is correctly converted to a date string in the DD/MM/YYYY format', function () {
+    let date = new Date('December 10, 2023');
+    let result = toDateString(date, 'DD/MM/YYYY');
+    expect(result).toBe('10/12/2023');
   });
 
-  test('if multiple known taxon names are passed, an Array of the full Objects should be returned', function () {
-    let taxonName0 = 'Plantae';
-    let result0 = data.results[1];
-    expect(result0.taxon.iconic_taxon_name).toBe(taxonName0);
-
-    let taxonName1 = 'Insecta';
-    let result1 = data.results[2];
-    expect(result1.taxon.iconic_taxon_name).toBe(taxonName1);
-
-    let result = getObservationsByTaxa(data, taxonName0, taxonName1);
-    expect(Array.isArray(result)).toBe(true);
-    expect(result.length).toBe(8);
-    expect(result).toContain(result0);
-    expect(result).toContain(result1);
+  test('a date is correctly converted to a date string in the MM/DD/YYYY format', function () {
+    let date = new Date('December 10, 2023');
+    let result = toDateString(date, 'MM/DD/YYYY');
+    expect(result).toBe('12/10/2023');
   });
 
-  test('if some known and some unknown taxon names are passed, an Array of the known Objects should be returned', function () {
-    let taxonName0 = 'Plantae';
-    let result0 = data.results[1];
-    expect(result0.taxon.iconic_taxon_name).toBe(taxonName0);
+  test('an error is thrown if the format is unknown', function () {
+    let date = new Date('December 10, 2023');
+    expect(() => toDateString(date, 'M/D/Y')).toThrow();
+  });
 
-    let taxonName1 = 'Unknown';
+  test('a date is correctly converted to a date string with expected month and day', function () {
+    let date = new Date('December 17, 2023');
+    let result = toDateString(date, 'YYYY/MM/DD');
+    expect(result).toBe('2023/12/17');
+  });
 
-    let result = getObservationsByTaxa(data, taxonName0, taxonName1);
-    expect(Array.isArray(result)).toBe(true);
-    expect(result.length).toBe(7);
-    expect(result).toContain(result0);
+  test('a date is correctly converted to a date string, with padded month', function () {
+    let date = new Date('January 10, 2023');
+    let result = toDateString(date, 'YYYY/MM/DD');
+    expect(result).toBe('2023/01/10');
+  });
+
+  test('a date is correctly converted to a date string, with padded day', function () {
+    let date = new Date('December 01, 2023');
+    let result = toDateString(date, 'YYYY/MM/DD');
+    expect(result).toBe('2023/12/01');
+  });
+
+  test('toDateString and parseDateString are reversible', function () {
+    let date = new Date('December 01, 2023');
+    let dateString = '2023/01/12';
+
+    expect(compareDates(parseDateString(toDateString(date, 'YYYY/MM/DD')), date)).toBe(true);
+    expect(toDateString(parseDateString(dateString), 'YYYY/MM/DD')).toBe(dateString);
+  });
+
+  test('an invalid date causes an error to be thrown', function () {
+    expect(() => toDateString('invalid date')).toThrow();
   });
 });

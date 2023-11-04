@@ -1,58 +1,53 @@
-/* eslint-disable jest/expect-expect */
-const data = require('./data');
-const { getObservationsByLocation } = require('./observations');
+const { normalizeTime } = require('./solutions');
 
-describe('Problem 05 - getObservationsByLocation() function', function () {
-  function expectSuitableArray(value, expectedLength) {
-    expect(Array.isArray(value)).toBe(true);
-    expect(value.length).toBe(expectedLength);
-  }
+/**
+ * 1. "01:30:00 PM"
+ * 2. "13:30:00"
+ *
+ * In the first case, the values are followed by `AM` or `PM`. In the second, the values
+ * are in 24-hour format.
+ *
+ * Valid Hour values are positive integers between 1 and 12 for AM/PM format and 0 and 23 for 24-hour format.
+ *
+ * Valid Minute and Second values are positive integers between 0 and 59.
+ *
+ * Parse the value and return a new string in the following form:
+ *
+ * "(hours, minutes, seconds)"
+ */
 
-  test('missing options object returns same Array as original', function () {
-    let results = getObservationsByLocation(data);
-    expect(results).toEqual(data.results);
+describe('Problem 5 - normalizeTime() function', function () {
+  test('a valid time in the form h:m:s AM/PM is returned as expected', function () {
+    let time = '01:30:00 PM';
+    expect(normalizeTime(time)).toBe('(13, 30, 0)');
   });
 
-  test('empty options object returns same Array as original', function () {
-    let results = getObservationsByLocation(data, {});
-    expect(results).toEqual(data.results);
+  test('a valid time in the form H:M:S is returned as expected', function () {
+    let time = '13:30:00';
+    expect(normalizeTime(time)).toBe('(13, 30, 0)');
   });
 
-  test('lat and lng values return an Array of expected results', function () {
-    let results = getObservationsByLocation(data, { lat: 43.798774894, lng: -79.3565522733 });
-    expectSuitableArray(results, 1);
-    results.forEach((result) => {
-      expect(result.location).toBe('43.798774894,-79.3565522733');
-    });
+  test('an invalid time in the form h:m:s AM/PM is returned as null', function () {
+    let time = '13:30:00 PM';
+    expect(normalizeTime(time)).toBe(null);
   });
 
-  test('lat and lng with unknown value returns an empty Array', function () {
-    let results = getObservationsByLocation(data, { lat: 43.66, lng: -79.39 });
-    expectSuitableArray(results, 0);
+  test('an invalid time in the form H:M:S is returned as null', function () {
+    let time = '24:30:00';
+    expect(normalizeTime(time)).toBe(null);
   });
 
-  test('min and max values return an Array of expected results', function () {
-    let results = getObservationsByLocation(data, {
-      lat: { min: 43, max: 44 },
-      lng: { min: -80, max: -78 }
-    });
-    expectSuitableArray(results, 10);
-    results.forEach((result) => {
-      const latitude = parseFloat(result.location.split(',')[0]);
-      expect(latitude).toBeGreaterThanOrEqual(43);
-      expect(latitude).toBeLessThanOrEqual(44);
-
-      const longitude = parseFloat(result.location.split(',')[1]);
-      expect(longitude).toBeGreaterThanOrEqual(-80);
-      expect(longitude).toBeLessThanOrEqual(-78);
-    });
+  test('a time with invalid minute value is returned as null', function () {
+    let time = '01:60:00 PM';
+    expect(normalizeTime(time)).toBe(null);
+    time = '13:60:00';
+    expect(normalizeTime(time)).toBe(null);
   });
 
-  test('min and max values too close together return an empty Array', function () {
-    let results = getObservationsByLocation(data, {
-      lat: { min: 43.65, max: 43.65 },
-      lng: { min: -79.38, max: -79.38 }
-    });
-    expectSuitableArray(results, 0);
+  test('a time with invalid second value is returned as null', function () {
+    let time = '01:30:60 PM';
+    expect(normalizeTime(time)).toBe(null);
+    time = '13:30:60';
+    expect(normalizeTime(time)).toBe(null);
   });
 });

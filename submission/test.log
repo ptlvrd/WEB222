@@ -1,19 +1,367 @@
 
-> web222-assignment-2@7.0.0 test
+> web222-assignment-1@6.0.0 test
 > jest --
 
-PASS src/problem-00.test.js
-PASS src/problem-05.test.js
-PASS src/problem-03.test.js
-PASS src/problem-08.test.js
-PASS src/problem-07.test.js
-PASS src/problem-02.test.js
-PASS src/problem-06.test.js
-PASS src/problem-01.test.js
-PASS src/problem-04.test.js
+jest-haste-map: Haste module naming collision: web222-assignment-1
+  The following files share their name; please adjust your hasteImpl:
+    * <rootDir>\package.json
+    * <rootDir>\submission\package.json
 
-Test Suites: 9 passed, 9 total
-Tests:       71 passed, 71 total
+FAIL src/problem-03.test.js
+  ● Problem 3 - parseDateString() function › thrown error uses a proper Error object and message
+
+    expect(received).toThrow(expected)
+
+    Expected message: "invalid date string, expected a `YYYY/MM/DD` or `DD/MM/YYYY` formatted string"
+    Received message: "Invalid format. Expected a string date in YYYY/MM/DD or DD/MM/YYYY format."
+
+          280 |   // Replace this comment with your code...
+          281 |   if (typeof value !== 'string') {
+        > 282 |     throw new Error('Invalid format. Expected a string date in YYYY/MM/DD or DD/MM/YYYY format.');
+              |           ^
+          283 |   }
+          284 |
+          285 |   const yyyyMmDdRegex = /^(\d{4})\/(\d{2})\/(\d{2})$/;
+
+      at parseDateString (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/src/solutions.js:282:11)
+      at parseDateString (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/src/problem-03.test.js:34:18)
+      at Object.<anonymous> (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/node_modules/expect/build/toThrowMatchers.js:74:11)
+      at Object.throwingMatcher [as toThrow] (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/node_modules/expect/build/index.js:320:21)
+      at Object.toThrow (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/src/problem-03.test.js:34:37)
+      at Object.toThrow (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/src/problem-03.test.js:34:37)
+
+  ● Problem 3 - parseDateString() function › passing a valid YYYY/MM/DD date string results in correct date object
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      37 |   test('passing a valid YYYY/MM/DD date string results in correct date object', function () {
+      38 |     let result = parseDateString('2023/01/15');
+    > 39 |     expect(assertDate(result, 2023, 1, 15)).toBe(true);
+         |                                             ^
+      40 |   });
+      41 |
+      42 |   test('passing a valid DD/MM/YYYY date string results in correct date object', function () {
+
+      at Object.toBe (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/src/problem-03.test.js:39:45)
+
+  ● Problem 3 - parseDateString() function › passing a valid DD/MM/YYYY date string results in correct date object
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      42 |   test('passing a valid DD/MM/YYYY date string results in correct date object', function () {
+      43 |     let result = parseDateString('15/01/2023');
+    > 44 |     expect(assertDate(result, 2023, 1, 15)).toBe(true);
+         |                                             ^
+      45 |   });
+      46 | });
+      47 |
+
+      at Object.toBe (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/src/problem-03.test.js:44:45)
+
+FAIL src/problem-05.test.js
+  ● Problem 5 - normalizeTime() function › a valid time in the form h:m:s AM/PM is returned as expected
+
+    TypeError: Assignment to constant variable.
+
+      417 |     hours = 0;
+      418 |   } else if (isPM && hours !== 12) {
+    > 419 |     hours += 12;
+          |          ^
+      420 |   }
+      421 |
+      422 |   return `(${hours}, ${minutes}, ${seconds})`;
+
+      at normalizeTime (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/src/solutions.js:419:10)
+      at Object.normalizeTime (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/src/problem-05.test.js:22:12)
+
+  ● Problem 5 - normalizeTime() function › an invalid time in the form h:m:s AM/PM is returned as null
+
+    TypeError: Assignment to constant variable.
+
+      417 |     hours = 0;
+      418 |   } else if (isPM && hours !== 12) {
+    > 419 |     hours += 12;
+          |          ^
+      420 |   }
+      421 |
+      422 |   return `(${hours}, ${minutes}, ${seconds})`;
+
+      at normalizeTime (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/src/solutions.js:419:10)
+      at Object.normalizeTime (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/src/problem-05.test.js:32:12)
+
+FAIL src/problem-06.test.js
+  ● Problem 6 - formatTimes() › a single time is valid
+
+    TypeError: Assignment to constant variable.
+
+      417 |     hours = 0;
+      418 |   } else if (isPM && hours !== 12) {
+    > 419 |     hours += 12;
+          |          ^
+      420 |   }
+      421 |
+      422 |   return `(${hours}, ${minutes}, ${seconds})`;
+
+      at normalizeTime (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/src/solutions.js:419:10)
+      at normalizeTime (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/src/solutions.js:456:28)
+      at Object.formatTimes (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/src/problem-06.test.js:5:18)
+
+  ● Problem 6 - formatTimes() › valid times of the form h:m:s AM/PM should be formatted correctly in a list
+
+    TypeError: Assignment to constant variable.
+
+      417 |     hours = 0;
+      418 |   } else if (isPM && hours !== 12) {
+    > 419 |     hours += 12;
+          |          ^
+      420 |   }
+      421 |
+      422 |   return `(${hours}, ${minutes}, ${seconds})`;
+
+      at normalizeTime (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/src/solutions.js:419:10)
+      at normalizeTime (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/src/solutions.js:456:28)
+      at Object.formatTimes (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/src/problem-06.test.js:15:18)
+
+FAIL src/problem-04.test.js
+  ● Problem 4 - toDateString() function › an error is thrown if the format is unknown
+
+    expect(received).toThrow()
+
+    Received function did not throw
+
+      31 |   test('an error is thrown if the format is unknown', function () {
+      32 |     let date = new Date('December 10, 2023');
+    > 33 |     expect(() => toDateString(date, 'M/D/Y')).toThrow();
+         |                                               ^
+      34 |   });
+      35 |
+      36 |   test('a date is correctly converted to a date string with expected month and day', function () {
+
+      at Object.toThrow (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/src/problem-04.test.js:33:47)
+
+  ● Problem 4 - toDateString() function › toDateString and parseDateString are reversible
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      56 |     let dateString = '2023/01/12';
+      57 |
+    > 58 |     expect(compareDates(parseDateString(toDateString(date, 'YYYY/MM/DD')), date)).toBe(true);
+         |                                                                                   ^
+      59 |     expect(toDateString(parseDateString(dateString), 'YYYY/MM/DD')).toBe(dateString);
+      60 |   });
+      61 |
+
+      at Object.toBe (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/src/problem-04.test.js:58:83)
+
+FAIL src/problem-08.test.js
+  ● Problem 8 - buildApiEndpoint() function › missing or empty resourceType or resourceId throw
+
+    expect(received).toThrow()
+
+    Received function did not throw
+
+      22 |     expect(() => buildApiEndpoint('', '123', 'John Doe')).toThrow();
+      23 |     expect(() => buildApiEndpoint('users', '', 'John Doe')).toThrow();
+    > 24 |     expect(() => buildApiEndpoint('users', '123', '')).toThrow();
+         |                                                        ^
+      25 |   });
+      26 |
+      27 |   test('extraData can be left out', function () {
+
+      at Object.toThrow (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/src/problem-08.test.js:24:56)
+
+PASS submission/src/problem-00.test.js
+PASS submission/src/problem-07.test.js
+FAIL submission/src/problem-04.test.js
+  ● Problem 4 - toDateString() function › an error is thrown if the format is unknown
+
+    expect(received).toThrow()
+
+    Received function did not throw
+
+      31 |   test('an error is thrown if the format is unknown', function () {
+      32 |     let date = new Date('December 10, 2023');
+    > 33 |     expect(() => toDateString(date, 'M/D/Y')).toThrow();
+         |                                               ^
+      34 |   });
+      35 |
+      36 |   test('a date is correctly converted to a date string with expected month and day', function () {
+
+      at Object.toThrow (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/submission/src/problem-04.test.js:33:47)
+
+  ● Problem 4 - toDateString() function › toDateString and parseDateString are reversible
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      56 |     let dateString = '2023/01/12';
+      57 |
+    > 58 |     expect(compareDates(parseDateString(toDateString(date, 'YYYY/MM/DD')), date)).toBe(true);
+         |                                                                                   ^
+      59 |     expect(toDateString(parseDateString(dateString), 'YYYY/MM/DD')).toBe(dateString);
+      60 |   });
+      61 |
+
+      at Object.toBe (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/submission/src/problem-04.test.js:58:83)
+
+FAIL submission/src/problem-03.test.js
+  ● Problem 3 - parseDateString() function › thrown error uses a proper Error object and message
+
+    expect(received).toThrow(expected)
+
+    Expected message: "invalid date string, expected a `YYYY/MM/DD` or `DD/MM/YYYY` formatted string"
+    Received message: "Invalid format. Expected a string date in YYYY/MM/DD or DD/MM/YYYY format."
+
+          280 |   // Replace this comment with your code...
+          281 |   if (typeof value !== 'string') {
+        > 282 |     throw new Error('Invalid format. Expected a string date in YYYY/MM/DD or DD/MM/YYYY format.');
+              |           ^
+          283 |   }
+          284 |
+          285 |   const yyyyMmDdRegex = /^(\d{4})\/(\d{2})\/(\d{2})$/;
+
+      at parseDateString (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/submission/src/solutions.js:282:11)
+      at parseDateString (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/submission/src/problem-03.test.js:34:18)
+      at Object.<anonymous> (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/node_modules/expect/build/toThrowMatchers.js:74:11)
+      at Object.throwingMatcher [as toThrow] (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/node_modules/expect/build/index.js:320:21)
+      at Object.toThrow (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/submission/src/problem-03.test.js:34:37)
+      at Object.toThrow (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/submission/src/problem-03.test.js:34:37)
+
+  ● Problem 3 - parseDateString() function › passing a valid YYYY/MM/DD date string results in correct date object
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      37 |   test('passing a valid YYYY/MM/DD date string results in correct date object', function () {
+      38 |     let result = parseDateString('2023/01/15');
+    > 39 |     expect(assertDate(result, 2023, 1, 15)).toBe(true);
+         |                                             ^
+      40 |   });
+      41 |
+      42 |   test('passing a valid DD/MM/YYYY date string results in correct date object', function () {
+
+      at Object.toBe (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/submission/src/problem-03.test.js:39:45)
+
+  ● Problem 3 - parseDateString() function › passing a valid DD/MM/YYYY date string results in correct date object
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      42 |   test('passing a valid DD/MM/YYYY date string results in correct date object', function () {
+      43 |     let result = parseDateString('15/01/2023');
+    > 44 |     expect(assertDate(result, 2023, 1, 15)).toBe(true);
+         |                                             ^
+      45 |   });
+      46 | });
+      47 |
+
+      at Object.toBe (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/submission/src/problem-03.test.js:44:45)
+
+FAIL submission/src/problem-05.test.js
+  ● Problem 5 - normalizeTime() function › a valid time in the form h:m:s AM/PM is returned as expected
+
+    TypeError: Assignment to constant variable.
+
+      417 |     hours = 0;
+      418 |   } else if (isPM && hours !== 12) {
+    > 419 |     hours += 12;
+          |          ^
+      420 |   }
+      421 |
+      422 |   return `(${hours}, ${minutes}, ${seconds})`;
+
+      at normalizeTime (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/submission/src/solutions.js:419:10)
+      at Object.normalizeTime (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/submission/src/problem-05.test.js:22:12)
+
+  ● Problem 5 - normalizeTime() function › an invalid time in the form h:m:s AM/PM is returned as null
+
+    TypeError: Assignment to constant variable.
+
+      417 |     hours = 0;
+      418 |   } else if (isPM && hours !== 12) {
+    > 419 |     hours += 12;
+          |          ^
+      420 |   }
+      421 |
+      422 |   return `(${hours}, ${minutes}, ${seconds})`;
+
+      at normalizeTime (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/submission/src/solutions.js:419:10)
+      at Object.normalizeTime (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/submission/src/problem-05.test.js:32:12)
+
+FAIL submission/src/problem-08.test.js
+  ● Problem 8 - buildApiEndpoint() function › missing or empty resourceType or resourceId throw
+
+    expect(received).toThrow()
+
+    Received function did not throw
+
+      22 |     expect(() => buildApiEndpoint('', '123', 'John Doe')).toThrow();
+      23 |     expect(() => buildApiEndpoint('users', '', 'John Doe')).toThrow();
+    > 24 |     expect(() => buildApiEndpoint('users', '123', '')).toThrow();
+         |                                                        ^
+      25 |   });
+      26 |
+      27 |   test('extraData can be left out', function () {
+
+      at Object.toThrow (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/submission/src/problem-08.test.js:24:56)
+
+PASS submission/src/problem-02.test.js
+PASS submission/src/problem-01.test.js
+FAIL submission/src/problem-06.test.js
+  ● Problem 6 - formatTimes() › a single time is valid
+
+    TypeError: Assignment to constant variable.
+
+      417 |     hours = 0;
+      418 |   } else if (isPM && hours !== 12) {
+    > 419 |     hours += 12;
+          |          ^
+      420 |   }
+      421 |
+      422 |   return `(${hours}, ${minutes}, ${seconds})`;
+
+      at normalizeTime (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/submission/src/solutions.js:419:10)
+      at normalizeTime (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/submission/src/solutions.js:456:28)
+      at Object.formatTimes (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/submission/src/problem-06.test.js:5:18)
+
+  ● Problem 6 - formatTimes() › valid times of the form h:m:s AM/PM should be formatted correctly in a list
+
+    TypeError: Assignment to constant variable.
+
+      417 |     hours = 0;
+      418 |   } else if (isPM && hours !== 12) {
+    > 419 |     hours += 12;
+          |          ^
+      420 |   }
+      421 |
+      422 |   return `(${hours}, ${minutes}, ${seconds})`;
+
+      at normalizeTime (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/submission/src/solutions.js:419:10)
+      at normalizeTime (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/submission/src/solutions.js:456:28)
+      at Object.formatTimes (C:\Users\saumi\Downloads\Source Files (2)../../../../../a1/submission/src/problem-06.test.js:15:18)
+
+PASS src/problem-07.test.js
+PASS src/problem-01.test.js
+PASS src/problem-02.test.js
+PASS src/problem-00.test.js
+
+Test Suites: 10 failed, 8 passed, 18 total
+Tests:       20 failed, 110 passed, 130 total
 Snapshots:   0 total
-Time:        2.458 s
+Time:        2.801 s
 Ran all test suites.

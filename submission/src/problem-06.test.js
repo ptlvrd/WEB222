@@ -1,30 +1,28 @@
-const data = require('./data');
-const { getPlaceURLs } = require('./observations');
+const { formatTimes } = require('./solutions');
 
-const places = (...ids) => ({ results: [{ place_ids: ids }] });
-
-describe('Problem 06 - getPlaceURLs() function', function () {
-  test('should return an Array', function () {
-    let result = getPlaceURLs(places(1234));
-    expect(Array.isArray(result)).toBe(true);
+describe('Problem 6 - formatTimes()', function () {
+  test('a single time is valid', function () {
+    let result = formatTimes('4:26:24 PM');
+    expect(result).toBe('[(16, 26, 24)]');
   });
 
-  test('should include the expected URL', function () {
-    let result = getPlaceURLs(places(45678));
-    expect(result).toContain('https://www.inaturalist.org/observations?place_id=45678');
+  test('valid times of the form h:m:s should be formatted correctly in a list', function () {
+    let result = formatTimes('1:16:24', '1:16:25', '1:16:26');
+    expect(result).toBe('[(1, 16, 24), (1, 16, 25), (1, 16, 26)]');
   });
 
-  test('should work for multiple place_ids', function () {
-    let result = getPlaceURLs(places(1, 2, 3));
-    expect(result).toContain('https://www.inaturalist.org/observations?place_id=1');
-    expect(result).toContain('https://www.inaturalist.org/observations?place_id=2');
-    expect(result).toContain('https://www.inaturalist.org/observations?place_id=3');
+  test('valid times of the form h:m:s AM/PM should be formatted correctly in a list', function () {
+    let result = formatTimes('4:16:24 PM', '4:16:25 AM');
+    expect(result).toBe('[(16, 16, 24), (4, 16, 25)]');
   });
 
-  test('should work for multiple results', function () {
-    let results = getPlaceURLs(data);
-    results.forEach(function (result) {
-      expect(/https:\/\/www.inaturalist.org\/observations\?place_id=\d+/.test(result)).toBe(true);
-    });
+  test('invalid times are skipped', function () {
+    let result = formatTimes('4:16:24', '60:60:60', '100:100:100', '4:16:25 AM');
+    expect(result).toBe('[(4, 16, 24), (4, 16, 25)]');
+  });
+
+  test('if all values are invalid, an empty list is returned', function () {
+    let result = formatTimes('60:60:60', '100:100:100');
+    expect(result).toBe('[]');
   });
 });

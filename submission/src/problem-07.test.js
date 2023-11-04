@@ -1,46 +1,88 @@
-const data = require('./data');
-const result0 = data.results[0];
-const result1 = data.results[1];
-const { getSpeciesObservations } = require('./observations');
+const { mimeTypeFromFilename } = require('./solutions');
 
-describe('Problem 07 - getSpeciesObservations() function', function () {
-  let samples, sampleData;
-
-  beforeEach(() => {
-    samples = [result0, result1];
-    sampleData = { results: samples };
+describe('Problem 7 - mimeTypeFromFilename() function', function () {
+  test('correct MIME type for TXT extension', function () {
+    expect(mimeTypeFromFilename('doc.txt')).toEqual('text/plain');
   });
 
-  test('should return an Object with the right properties', function () {
-    let result = getSpeciesObservations(sampleData);
-    expect(typeof result === 'object').toBe(true);
-    expect(typeof result['Ondatra zibethicus'] === 'number').toBe(true);
-    expect(result['Ondatra zibethicus']).toBe(1);
+  test('correct MIME type for HTML extensions', function () {
+    expect(mimeTypeFromFilename('index.html')).toEqual('text/html');
+    expect(mimeTypeFromFilename('index.htm')).toEqual('text/html');
   });
 
-  test('should return an Object with correct count properties', function () {
-    let result = getSpeciesObservations(sampleData);
-    expect(result).toEqual({ 'Ondatra zibethicus': 1, 'Cordia sebestena sebestena': 1 });
+  test('correct MIME type for CSS extension', function () {
+    expect(mimeTypeFromFilename('styles.css')).toEqual('text/css');
   });
 
-  test('should return an Object with correct counts for multiple species', function () {
-    let result = getSpeciesObservations({ results: [result0, result1, result0, result0, result1] });
-    expect(result).toEqual({ 'Ondatra zibethicus': 3, 'Cordia sebestena sebestena': 2 });
+  test('correct MIME type for JS extension', function () {
+    expect(mimeTypeFromFilename('script.js')).toEqual('application/javascript');
   });
 
-  test('real-data should produce the expected counts Object', function () {
-    let result = getSpeciesObservations(data);
-    expect(result).toEqual({
-      'Ondatra zibethicus': 1,
-      'Cordia sebestena sebestena': 1,
-      'Bombus impatiens': 1,
-      'Brugmansia arborea': 1,
-      Dryobates: 1,
-      'Campsis radicans': 1,
-      'Solanum dulcamara': 1,
-      Plectranthus: 1,
-      Petunia: 1,
-      Apioideae: 1
-    });
+  test('correct MIME type for JPEG extensions', function () {
+    expect(mimeTypeFromFilename('photo.jpg')).toEqual('image/jpeg');
+    expect(mimeTypeFromFilename('photo.jpeg')).toEqual('image/jpeg');
+  });
+
+  test('correct MIME type for PNG extension', function () {
+    expect(mimeTypeFromFilename('photo.png')).toEqual('image/png');
+  });
+
+  test('correct MIME type for GIF extension', function () {
+    expect(mimeTypeFromFilename('animation.gif')).toEqual('image/gif');
+  });
+
+  test('correct MIME type for BMP extension', function () {
+    expect(mimeTypeFromFilename('graphic.bmp')).toEqual('image/bmp');
+  });
+
+  test('correct MIME type for SVG extension', function () {
+    expect(mimeTypeFromFilename('chart.svg')).toEqual('image/svg+xml');
+  });
+
+  test('correct MIME type for JSON extension', function () {
+    expect(mimeTypeFromFilename('data.json')).toEqual('application/json');
+  });
+
+  test('correct MIME type for XML extension', function () {
+    expect(mimeTypeFromFilename('data.xml')).toEqual('application/xml');
+  });
+
+  test('correct MIME type for CSV extension', function () {
+    expect(mimeTypeFromFilename('data.csv')).toEqual('text/csv');
+  });
+
+  test('correct MIME type for unknown extensions', function () {
+    expect(mimeTypeFromFilename('file.exe')).toEqual('application/octet-stream');
+    expect(mimeTypeFromFilename('library.dll')).toEqual('application/octet-stream');
+  });
+
+  test('absolute Unix file paths give correct MIME type', function () {
+    expect(mimeTypeFromFilename('/public/site/www/cat.jpg')).toEqual('image/jpeg');
+  });
+
+  test('absolute Windows file paths give correct MIME type', function () {
+    expect(mimeTypeFromFilename('C:\\Documents\\Seneca\\WEB222\\students.csv')).toEqual('text/csv');
+  });
+
+  test('spaces in path give correct MIME type', function () {
+    expect(mimeTypeFromFilename('/this path/has quite a/few spaces/doc.txt')).toEqual('text/plain');
+  });
+
+  test('periods in path give correct MIME type', function () {
+    expect(mimeTypeFromFilename('/this.path/has.quite.a/few.periods/dog.png')).toEqual('image/png');
+  });
+
+  test('relative path gives correct MIME type', function () {
+    expect(mimeTypeFromFilename('../names.json')).toEqual('application/json');
+  });
+
+  test('filename with no extension should give unknown MIME type', function () {
+    expect(mimeTypeFromFilename('/this/file/has/no/extension')).toEqual('application/octet-stream');
+  });
+
+  test('filename with unexpected extension should give unknown MIME type', function () {
+    expect(mimeTypeFromFilename('/this/file/has/an/unknown/extension.cgi')).toEqual(
+      'application/octet-stream'
+    );
   });
 });
